@@ -16,7 +16,7 @@ Jotta generaattorin tarvitsemat perustodennäköisyydet saadaan selville, tarvit
 
 Ohjelma toimii komentorivillä, sille annetaan haluttu määrä generoitavia sanoja sekä minkä asteisella Markovin ketjulla sanoja toivotaan generoitavan. Ajon jälkeen ohjelma listaa generoidut sanat sekä tarjoaa mahdollisuuden niiden tallentamiseen tiedostona.
 
-___Harjoitustyön ydin on sanojen generointi Markovin ketjulla opetusdataan perustuen.___
+___Harjoitustyön ydin on sanojen generointi Markovin ketjulla opetusdataan perustuen. Generaattori oppii harjoitusdatasta todennäköisyydet seuraavalle merkille, jonka perusteella se arpoo seuraavan merkin, luoden samankaltaisia sanoja kuin alkuperäisessä harjoitusdatassa.___
 
 ### Aikavaatimukset
 Trie-haku on aikavaatimukseltaan O(N) [1] ja generaattorin aikavaatimus on polynominen riippuen sen asteesta, eli mitä enemmän asteita Markovin ketjussa, sen laajempi matriisi vaaditaan seuraavan merkin laskemiseen. Trie-tietorakenne on tehokas tallentamaan merkkijonoja mutta laajassa aineistossa se vaatii kuitenkin jonkin verran tilaa, joskin se tuskin tulee olemaan rajoite ohjelmassa.
