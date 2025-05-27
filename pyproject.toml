@@ -1,13 +1,14 @@
 [project]
-name = "tira harjoitustyo"
+name = "tira_harjoitustyo"
 version = "0.1.0"
 description = ""
 authors = [
     {name = "Karri Lumivirta",email = "lumivirta.karri@hotmail.com"}
 ]
 readme = "README.md"
-requires-python = "\">=3.10\""
+requires-python = "^3.10"
 dependencies = [
+    "numpy (>=2.2.6,<3.0.0)"
 ]
 
 
