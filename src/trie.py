@@ -7,7 +7,7 @@ class Node:
     def __init__(self, character):
         self.value = character
         self.children = {} #dict jossa key on merkki ja arvo on suhteellinen yleisyys?
-        #FREQ tänne, tarkastellaan vanhemmasta
+        self.frequency = 1
 
     def add(self, node):
         '''
@@ -20,16 +20,17 @@ class Node:
 
 
     def __str__(self):
-        return f'Node: "{self.value}", children are {self.children}'
+        return f'Node: "{self.value}" with frequency {self.frequency}, children are {self.children}'
     
     def __repr__(self):
         return f'Node({self.value})'
 
 #Luokka joka luo trie rakenteen alkaen tyhjästä alkunodesta, käyttäen hyväkseen Node luokkaa.
 class Trie:
-    def __init__(self):
+    def __init__(self, degree = 2):
         mock_active = False
         self.starting_node = Node('')
+        self.degree = degree
         if mock_active:
             self.starting_node.add(Node("f"))
             self.starting_node.children["f"].add(Node("fo"))
@@ -44,10 +45,10 @@ class Trie:
             self.starting_node.children["b"].add(Node("ba"))
             self.starting_node.children["b"].children["ba"].add(Node("bar"))
 
-    def add(self, word, degree):
+    def add(self, word):
 
         for i in range(0,len(word)):
-            new_node = word[i:i+degree+1]
+            new_node = word[i:i+self.degree+1]
 
             node = self.search(new_node[0])
 
@@ -55,7 +56,7 @@ class Trie:
                 self.starting_node.add(Node(new_node[0]))
             else:
                 #Update freq in node
-                pass
+                node.frequency += 1
             
             
             for j in range(1,len(new_node)):
@@ -67,7 +68,7 @@ class Trie:
 
                 if node_to_add in found_node.children:
                     #To update freq in future
-                    pass                    
+                    found_node.children[node_to_add].frequency += 1                    
                 else:
                     found_node.add(Node(node_to_add))
             
@@ -91,6 +92,8 @@ class Trie:
 
 
 
+
+
     def __str__(self):
         return f'{self.starting_node}'
 
@@ -100,14 +103,17 @@ if __name__ == "__main__":
 
 
     
-    trie_test = Trie()
+    trie_test = Trie(3)
 
-    trie_test.add("super",3)
+    trie_test.add("super")
 
-    trie_test.add("succor",3)
-    trie_test.add("sunset",3)
-    trie_test.add("sundown", 3)
+    trie_test.add("succor")
+    trie_test.add("sunset")
+    trie_test.add("sundown")
+    trie_test.add("ksuspop")
 
-    print(trie_test.search("sun"))
-
+    print(trie_test.search("sund"))
+    print(trie_test.search("su"))
+    print(trie_test.search("s"))
+    print(trie_test.search("k"))
 
