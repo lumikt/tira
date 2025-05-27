@@ -16,14 +16,14 @@ class Generator:
 
         for word in data:
             self.trie.add(word)
-    
+
 
     def generate(self,n=5):
         #TODO: Split & clean up function. Working version 1.
 
         generated_words = []
         words_to_generate = n
-        DESIRED_WORD_LENGTH = 10 #TEMPORARY CONST
+        DESIRED_WORD_LENGTH = 8 #TEMPORARY CONST
 
         while words_to_generate > 0:
             word = ""
@@ -84,6 +84,8 @@ class Generator:
                         word += selection_nodes[i][-1:]
 
             if len(word)< DESIRED_WORD_LENGTH:
+                continue
+            if word in generated_words:
                 continue
             generated_words.append(word)
             words_to_generate -=1
