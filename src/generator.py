@@ -1,15 +1,19 @@
 from numpy import random as npr
+from random import randint
 from trie import Trie
 from data_handler import DataHandler
 
 class Generator:
 
-    def __init__(self, source, degree = 2):
+    def __init__(self, source, degree:int = 2):
         self.trie = Trie(degree)
         self.data_handler = DataHandler(source)
         self.degree = degree
 
     def train(self):
+        """
+        Commits the training data to the trie structure and updates the trie node frequencies.
+        """
         #DataHandlerin process() avaa kohteen, puhdistaa datan, palauttaa listan sanoja
         #Trie add() lisää sanat listasta, päivittää frekvenssit nodeittain. 
         data = self.data_handler.process()
@@ -17,80 +21,87 @@ class Generator:
         for word in data:
             self.trie.add(word)
 
+    def choose(self, nodes:dict):
+        """
+        Chooses the following character based on given node dictionary based on frequency of the character.
+        Args:
+            nodes (dict): a dictionary of Node-type objects.
+        """
 
-    def generate(self,n=5):
-        #TODO: Split & clean up function. Working version 1.
+        total_weight_of_nodes = 0
+        selection_ranges = {}
 
+        # Assigning to the selection_range dict each node value, a string, as key value and
+        # the selection range as a tuple, as value.
+        # Calculate total weight of the nodes to have a selection range.
+          
+        for key, node in nodes.items():
+            selection_ranges[node.value] = (total_weight_of_nodes+1, total_weight_of_nodes+node.frequency)
+            total_weight_of_nodes += node.frequency
+        
+        # Randomly choose an integer in the range of 1 to the total weight of nodes, to use
+        # as weighted random sampling.
+
+        choice = randint(1, total_weight_of_nodes)
+        
+        # Select the matching key (a string) in which the selection range matches. E.g. if choice is 1 (out of 1-10),
+        # we select the key that has selection range (1,3) as 1<= 2 <= 3.
+        # Return the last character of the string, e.g. if string is "eac" in a 2 degree chain, the selected
+        # character is "c" as it follows from the previous states "ea", and so we return "c".
+
+        for key, node in selection_ranges.items():
+            if node[0] <= choice <= node[1]:
+                character = key
+                return character[-1:]
+        
+
+    def generate(self,n:int=5):
+        """
+        Generates a list of words using a Markov chain.
+        Args: 
+            n (int): the n number of words to be returned, default is 5.
+        """
         generated_words = []
         words_to_generate = n
         DESIRED_WORD_LENGTH = 8 #TEMPORARY CONST
 
         while words_to_generate > 0:
             word = ""
-            starting_nodes = []
-            total_count_of_characters = 0    
-
-            selection_nodes = []
-            selection_freqs = []
-            node_freq = 0
-            
-            for key, node in self.trie.starting_node.children.items():
-                starting_nodes.append(node)
-                total_count_of_characters +=node.frequency     
-
-            for node in starting_nodes:
-                selection_freqs.append(round(node.frequency/total_count_of_characters,4))
-                selection_nodes.append((node.value))
-
-
-            test = npr.multinomial(1, selection_freqs, size=1)
-
-            for i in range(0, len(test[0])):
-                if test[0][i] == 1:
-                    word += selection_nodes[i]
-
             
             while len(word) < DESIRED_WORD_LENGTH:
-                word_length = len(word) 
-                
+   
                 if len(word) >= self.degree:
-                    search_key = word[word_length-self.degree:]
-                else:
-                    search_key = word
+                    #If the length of the string is sufficient for full utilization of Markov
+                    #degree, we use that string to search for candidates for following character,
+                    # e.g. in a 2 degree Markov chain we would search with two characters.
 
+                    search_key = word[len(word)-self.degree:]
+
+                else:
+                    # If the string is not long enough for full Markov degree utilization, we
+                    # use the whole string as a search parameter. If the string is empty, trie.search()
+                    # returns the starting node of the trie
+
+                    search_key = word
+                
                 node = self.trie.search(search_key)
+
+                #If there are no children for the current search key, we abort the 
+                # generation and start over as we can't select the next character.
+                # More common in shorter training datasets and high degree chains.
                 if not node or node.children == {}:
                     break
                 
-                available_nodes = []
-                selection_nodes = []
-                selection_freqs = []
-                
-                node_freq = 0
-
-                for key, node in node.children.items():
-                    available_nodes.append(node)
-                    total_count_of_characters +=node.frequency     
-
-                for node in available_nodes:
-                    selection_freqs.append(round(node.frequency/total_count_of_characters,4))
-                    selection_nodes.append((node.value))
-
-
-                test = npr.multinomial(1, selection_freqs, size=1)
-
-                for i in range(0, len(test[0])):
-                    if test[0][i] == 1:
-                        word += selection_nodes[i][-1:]
-
-            if len(word)< DESIRED_WORD_LENGTH:
+                # Send node children to choose() which selects the following character
+                word += self.choose(node.children)
+   
+            # Check if the generated string matches specifications and is not a duplicate.
+            if (word in generated_words) or (len(word) < DESIRED_WORD_LENGTH):
                 continue
-            if word in generated_words:
-                continue
+            
             generated_words.append(word)
             words_to_generate -=1
             
-        #print(test)
         return generated_words
 
 if __name__ == "__main__":
@@ -111,6 +122,8 @@ if __name__ == "__main__":
 
     #print(test.trie.starting_node)
     #print(test.trie.search(""))
-    words = test.generate(20)
+    #print(test.trie.search("sek"))
+    #print(test.trie.starting_node)
+    words = test.generate(5)
     for word in words:
         print(word)
