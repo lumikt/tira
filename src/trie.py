@@ -74,7 +74,9 @@ class Trie:
             
             
     def search(self, key):
-
+        if key == "":
+            return self.starting_node
+            
         node = self.search_helper(key, self.starting_node)
 
         return node
