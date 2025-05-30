@@ -1,3 +1,4 @@
+import io
 
 class DataHandler:
 
@@ -6,7 +7,7 @@ class DataHandler:
         self.data = []
 
     def read(self):
-        with open(self.source) as file:
+        with io.open(self.source,"r", encoding="utf-8") as file:
             raw_data = file.read()
 
         return raw_data
@@ -19,7 +20,7 @@ class DataHandler:
 
         #Tekstin käsittely haasteellista, jotain häikkää åäö-merkkien tunnistuksessa ja printtauksessa.
         for words in raw_words:
-            clean_word = "".join([c for c in words if c not in "@_!#$%^&*()<>?/|}{~:[]"])
+            clean_word = "".join([c for c in words if c not in " @_!#$%^&*()<>?/|}{~:[]"])
         
             self.data.append(clean_word)
         
