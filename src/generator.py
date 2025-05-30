@@ -1,14 +1,14 @@
-from numpy import random as npr
 from random import randint
 from trie import Trie
 from data_handler import DataHandler
 
 class Generator:
 
-    def __init__(self, source, degree:int = 2):
+    def __init__(self, source, degree:int = 2, word_length:int = 8):
         self.trie = Trie(degree)
         self.data_handler = DataHandler(source)
         self.degree = degree
+        self.word_length = word_length
 
     def train(self):
         """
@@ -63,12 +63,12 @@ class Generator:
         """
         generated_words = []
         words_to_generate = n
-        DESIRED_WORD_LENGTH = 8 #TEMPORARY CONST
+        desired_word_length = self.word_length 
 
         while words_to_generate > 0:
             word = ""
             
-            while len(word) < DESIRED_WORD_LENGTH:
+            while len(word) < desired_word_length:
    
                 if len(word) >= self.degree:
                     #If the length of the string is sufficient for full utilization of Markov
@@ -91,14 +91,14 @@ class Generator:
                 # More common in shorter training datasets and high degree chains.
                 if not node or node.children == {}:
                     break
-                
+
                 # Send node children to choose() which selects the following character
                 word += self.choose(node.children)
    
             # Check if the generated string matches specifications and is not a duplicate.
-            if (word in generated_words) or (len(word) < DESIRED_WORD_LENGTH):
+            if (word in generated_words) or (len(word) < desired_word_length):
                 continue
-            
+
             generated_words.append(word)
             words_to_generate -=1
             
@@ -108,7 +108,7 @@ if __name__ == "__main__":
     print("Dev testing:\n")
     print()
 
-    test = Generator(3)
+    test = Generator("testing.txt", 3)
     test.trie.add("kaikkivoipa")
     test.trie.add("asiaa")
     test.trie.add("tervahammas")
@@ -116,14 +116,14 @@ if __name__ == "__main__":
     test.trie.add("asianhaara")
     test.trie.add("kukkanen")
     #test.trie.add("elämä")
-    test.trie.add("tappava")
+    test.trie.add("tappava ")
     #test.trie.add("turvasatama")
     #test.trie.add("eläkeläinen")
 
     #print(test.trie.starting_node)
     #print(test.trie.search(""))
-    #print(test.trie.search("sek"))
     #print(test.trie.starting_node)
-    words = test.generate(5)
+    words = test.generate(2)
+    
     for word in words:
         print(word)
