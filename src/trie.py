@@ -1,17 +1,17 @@
 #Work in progress, aikainen hahmotelma rakenteesta.
 
 
-#Luokka nodelle joka tallentaa tiedot omista lapsistaan ja niiden suhteellisista esiintymiskerroista.
 class Node:
 
     def __init__(self, character):
-        self.value = character
-        self.children = {} #dict jossa key on merkki ja arvo on suhteellinen yleisyys?
-        self.frequency = 1
+        self.value = character # Contains the string of the current node
+        self.children = {}  # A dictionary of child nodes which follow from current nodes
+        self.frequency = 1 # The amount of times the node string has been added to data, used to calc probabilities
 
     def add(self, node):
         '''
-        Assign children to the trie node as a tuple containing the child node and its frequency.
+        Assign a new child to the children-dictionary with the string value of the node being added as 
+        key and the node object itself as the value.
         '''
 
         self.children[node.value]=(node)
@@ -25,41 +25,43 @@ class Node:
     def __repr__(self):
         return f'Node({self.value})'
 
-#Luokka joka luo trie rakenteen alkaen tyhjästä alkunodesta, käyttäen hyväkseen Node luokkaa.
+
 class Trie:
     def __init__(self, degree = 2):
-        mock_active = False
-        self.starting_node = Node('')
-        self.degree = degree
-        if mock_active:
-            self.starting_node.add(Node("f"))
-            self.starting_node.children["f"].add(Node("fo"))
-            self.starting_node.children["f"].add(Node("fa"))
-            self.starting_node.children["f"].children["fa"].add(Node("far"))
-
-            self.starting_node.children["f"].children["fo"].add(Node("foo"))
-            self.starting_node.children["f"].children["fo"].add(Node("foz"))
-
-
-            self.starting_node.add(Node("b"))
-            self.starting_node.children["b"].add(Node("ba"))
-            self.starting_node.children["b"].children["ba"].add(Node("bar"))
+        self.starting_node = Node('') # Init an empty starting node for the trie
+        self.degree = degree # Markov chain degree selection determines depth of the trie (degree + 1)
+ 
 
     def add(self, word):
-
+        '''
+        Adds a word to the trie-structure. Depending on the degree of the trie, the word is stored in 
+        degree + 1 long strings in the trie.
+        Args:
+            word (string): string to add to the trie
+        '''
         for i in range(0,len(word)):
+
+            # Create the string to be added to the trie, e.g. if adding "super" into a 2-degree trie,
+            # the word is split into sup, upe, per, pe and r, and added into the trie.
             new_node = word[i:i+self.degree+1]
 
+            # Check if a node exists for the string being added
             node = self.search(new_node[0])
 
             if not node:
+                # If no node is found, a new node is initialized and added for the starting
+                # character of the string
                 self.starting_node.add(Node(new_node[0]))
             else:
-                #Update freq in node
+                # If a node is found, the node frequency is updated
                 node.frequency += 1
             
             
             for j in range(1,len(new_node)):
+                # Check that nodes exist for all parts of the string being added,
+                # e.g. for "sup", check that "su" and "sup" exist in the trie, if not
+                # then they are added
+
                 node_key = new_node[0:j]
                 found_node = self.search(node_key)
                 
@@ -67,13 +69,21 @@ class Trie:
                 node_to_add = new_node[0:j+1]
 
                 if node_to_add in found_node.children:
-                    #To update freq in future
+                    # If a node is found, update the frequency
                     found_node.children[node_to_add].frequency += 1                    
                 else:
+                    # If no node is found, add the node to the list of children
                     found_node.add(Node(node_to_add))
             
             
     def search(self, key):
+        '''
+        Searches the trie structure with the given key, returns node-object if there is one
+        or a None if there is no node.
+        Args:
+            key (str): the string that is being searched for
+        '''
+
         if key == "":
             return self.starting_node
             
@@ -82,7 +92,14 @@ class Trie:
         return node
 
     def search_helper(self, key, node):
-
+        '''
+        Helper function for search(). Recursively traverses the trie to find the node matching given key.
+        Returns node-object if found, otherwise returns None.
+        Args:
+            key (str): the string being searched
+            node (Node): the node object from which to search
+        '''
+        
         if key in node.children:
             return node.children[key]
 
