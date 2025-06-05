@@ -20,6 +20,22 @@ class TrieTest(unittest.TestCase):
 
         self.assertEqual("w", node)
 
+    def test_trie_search_multiple_nodes(self):
+
+        trie = Trie(3)
+
+        trie.add("super")
+        trie.add("alakazam")
+        trie.add("downpour")
+        trie.add("excited")
+
+        self.assertEqual(trie.search("ala").value, "ala")
+        self.assertEqual(trie.search("pou").value, "pou")
+        self.assertEqual(trie.search("exc").value, "exc")
+        self.assertEqual(trie.search("per").value, "per")
+        self.assertEqual(trie.search("dow").value, "dow")
+
+
     def test_trie_adding_a_word(self):
 
         self.trie.add("triumphant")
