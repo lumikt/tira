@@ -19,7 +19,13 @@ class TrieTest(unittest.TestCase):
         node = self.trie.search("w").value
 
         self.assertEqual("w", node)
+    def test_trie_adding_a_word(self):
 
+        self.trie.add("triumphant")
+        test_case = self.trie.search("tri")
+
+        self.assertNotEqual(None,test_case)
+    
     def test_trie_search_multiple_nodes(self):
 
         trie = Trie(3)
@@ -34,14 +40,6 @@ class TrieTest(unittest.TestCase):
         self.assertEqual(trie.search("exc").value, "exc")
         self.assertEqual(trie.search("per").value, "per")
         self.assertEqual(trie.search("dow").value, "dow")
-
-
-    def test_trie_adding_a_word(self):
-
-        self.trie.add("triumphant")
-        test_case = self.trie.search("tri")
-
-        self.assertNotEqual(None,test_case)
     
     def test_trie_variable_degrees(self):
         word = "califragilisticexpialidocious"
