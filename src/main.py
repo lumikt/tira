@@ -42,10 +42,6 @@ def main():
     elif save == "n":
         print("No words saved.")
     
-    #else:
-    #    print("Invalid input, please repeat.")
-    #    save = input("y/n?:")
-
     print("Thanks for using the generator.")
 
 
