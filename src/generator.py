@@ -44,7 +44,7 @@ class Generator:
 
         choice = randint(1, total_weight_of_nodes)
         
-        # Select the matching key (a string) in which the selection range matches. E.g. if choice is 1 (out of 1-10),
+        # Select the matching key (a string) in which the selection range matches. E.g. if choice is 2 (out of 1-10),
         # we select the key that has the matching selection range, e.g. (1,3) as 1<= 2 <= 3.
         # Return the last character of the string, e.g. if string is "eac" in a 2 degree chain, the selected
         # character is "c" as it follows from the previous states "ea", so we return "c".
