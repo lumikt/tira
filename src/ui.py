@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import * 
 from tkinter import ttk
+from tkinter import filedialog
 from generator import Generator
 
 
@@ -16,10 +17,11 @@ class UI(tk.Frame):
         self.root.rowconfigure(0,weight=1)
 
         self.words = ["Please generate words.", "You can assign wanted parameters in the fields to the right."]        
-
-
-        self.test_widget()
+        self.filename = "Please select a file"
+        
+        self.input_frames()
         self.results_frame()
+
         for child in self.mainframe.winfo_children(): 
             child.grid_configure(padx=5, pady=5)
 
@@ -27,11 +29,13 @@ class UI(tk.Frame):
 
     def results_frame(self):
 
+        # Parent frame for results view
         results_frame = ttk.Frame(self.mainframe, padding="3 3 12 12")
         results_frame.columnconfigure(0, weight=1)
         results_frame.rowconfigure(0,weight=1)
 
 
+        # Textbox to contain generated words
         text = Text(results_frame)
 
         for word in self.words:
@@ -42,19 +46,22 @@ class UI(tk.Frame):
         results_frame.grid(column=2,row=1)
 
 
-    def test_widget(self):
+    def input_frames(self):
 
-        test_frame = ttk.Frame(self.mainframe,padding="3 3 12 12")
-        test_frame.columnconfigure(0, weight=1)
-        test_frame.rowconfigure(0,weight=1)
+        # Parent frame for the input fields, parameters & run controls
+        input_frame = ttk.Frame(self.mainframe,padding="3 3 12 12")
+        input_frame.columnconfigure(0, weight=1)
+        input_frame.rowconfigure(0,weight=1)
 
-        self.parameter_panel_widget(test_frame)
-        self.control_panel_widget(test_frame)
+        # Call to create parameter panel
+        self.parameter_panel_widget(input_frame)
+
+        #Call to create operating panel
+        self.control_panel_widget(input_frame)
         
-        for child in test_frame.winfo_children():
-            child.grid_configure(padx=5,pady=5)
+        self.set_grids(input_frame)
 
-        test_frame.grid(column=1, row=1)
+        input_frame.grid(column=1, row=1)
 
 
     def control_panel_widget(self,frame):
@@ -69,9 +76,12 @@ class UI(tk.Frame):
         ttk.Button(control_frame, text="Run generation", command=self.run_generation).grid(column=1,row=1)
 
         self.set_grids(control_frame)
+        #TODO: Add field to show currently trained on file
 
     def run_generation(self):
-        self.generator = Generator("testing/testing.txt", int(self.degrees.get()), int(self.word_length.get()))
+        #TODO: separate generation and training so user can generate multiple lists if wanted
+        
+        self.generator = Generator(self.filename, int(self.degrees.get()), int(self.word_length.get()))
         self.generator.train()
 
         self.words = self.generator.generate(int(self.n.get()))
@@ -81,6 +91,14 @@ class UI(tk.Frame):
 
     def save_output(self):
         print("This will save the output")        
+
+
+    def select_training_file(self):
+        # TODO: need to separate input_frames() from training file selection to update the frame without losing parameters
+        filename = filedialog.askopenfilename()
+
+        self.filename = filename
+        self.input_frames()
 
 
     def parameter_panel_widget(self,frame):
@@ -109,6 +127,10 @@ class UI(tk.Frame):
         self.n = StringVar()
         n_entry = ttk.Entry(parameter_frame, width = 5, textvariable = self.n)
         n_entry.grid(column=1,row=3)
+
+        ttk.Button(parameter_frame, text="Select training file",command=self.select_training_file).grid(column=0,row=4)
+        ttk.Label(parameter_frame, text=self.filename).grid(column=1,row=4)
+        
 
         # Populate the frames
         self.set_grids(parameter_frame)
