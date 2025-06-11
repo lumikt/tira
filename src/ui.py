@@ -4,14 +4,6 @@ from tkinter import ttk
 from generator import Generator
 
 
-test = Generator("testing/testing.txt", 3, 8)
-
-test.train()
-
-asd = test.generate(5)
-
-#for word in asd:
-#    print(word)
 
 class UI(tk.Frame):
 
@@ -23,7 +15,7 @@ class UI(tk.Frame):
         self.root.columnconfigure(0, weight = 1)
         self.root.rowconfigure(0,weight=1)
 
-        self.words = ["Please generate words."]        
+        self.words = ["Please generate words.", "You can assign wanted parameters in the fields to the right."]        
 
 
         self.test_widget()
@@ -39,7 +31,6 @@ class UI(tk.Frame):
         results_frame.columnconfigure(0, weight=1)
         results_frame.rowconfigure(0,weight=1)
 
-        TEST = ["Word", "Word", "Word", "Word", "Word", "Word", "Word", "Word", "Ending word"]
 
         text = Text(results_frame)
 
@@ -73,13 +64,13 @@ class UI(tk.Frame):
 
         ttk.Label(control_frame, text="Control panel widget").grid(column=0,row=0)
 
-        ttk.Button(control_frame, text="Save results",command=self.testing_function).grid(column=0,row=1)
+        ttk.Button(control_frame, text="Save results",command=self.save_output).grid(column=0,row=1)
 
-        ttk.Button(control_frame, text="Run generation", command=self.testing_function).grid(column=1,row=1)
+        ttk.Button(control_frame, text="Run generation", command=self.run_generation).grid(column=1,row=1)
 
         self.set_grids(control_frame)
 
-    def testing_function(self):
+    def run_generation(self):
         self.generator = Generator("testing/testing.txt", int(self.degrees.get()), int(self.word_length.get()))
         self.generator.train()
 
@@ -88,37 +79,42 @@ class UI(tk.Frame):
         self.results_frame()
 
 
-        
+    def save_output(self):
+        print("This will save the output")        
 
 
     def parameter_panel_widget(self,frame):
 
+        # Create parent frame for parameter panel
         parameter_frame = ttk.Frame(frame)
         parameter_frame.columnconfigure(0, weight=1)
         parameter_frame.rowconfigure(0, weight=1)
 
         ttk.Label(parameter_frame, text="Parameter widget thing").grid()
 
+        # Assign label and entry field to degree selection
         ttk.Label(parameter_frame, text="Degree: ").grid(column=0,row=1)
         self.degrees = StringVar()
         degree_entry = ttk.Entry(parameter_frame, width=5, textvariable=self.degrees)
         degree_entry.grid(column=1,row=1)
 
-
+        # Assign label and entry field to word length selection
         ttk.Label(parameter_frame,text="Test").grid(column=0, row=2)
         self.word_length= StringVar()
         length_entry = ttk.Entry(parameter_frame, width=5, textvariable=self.word_length)
         length_entry.grid(column=1,row=2)
 
+        # Assign label and entry field for word amount selection
         ttk.Label(parameter_frame, text="Words to generate:").grid(column=0,row=3)
         self.n = StringVar()
         n_entry = ttk.Entry(parameter_frame, width = 5, textvariable = self.n)
         n_entry.grid(column=1,row=3)
 
+        # Populate the frames
         self.set_grids(parameter_frame)
 
     def set_grids(self,frame):
-
+        # Function to run through widget children and packing them into the grid
         for child in frame.winfo_children():
             child.grid_configure(padx=2,pady=2)
 
@@ -127,13 +123,6 @@ class UI(tk.Frame):
         self.mainloop()
         
 
-
-    def calculate(self, *args):
-        try:
-            value = float(self.feet.get())
-            self.meters.set(int(0.3048 * value * 10000.0 + 0.5)/10000.0)
-        except ValueError:
-            pass
 
 app = UI()
 
