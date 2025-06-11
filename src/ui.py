@@ -22,7 +22,8 @@ class UI(tk.Frame):
         self.mainframe.grid(column=0, row = 0, sticky=("N", "W", "E", "S"))
         self.root.columnconfigure(0, weight = 1)
         self.root.rowconfigure(0,weight=1)
-        
+
+        self.words = ["Please generate words."]        
 
 
         self.test_widget()
@@ -42,7 +43,7 @@ class UI(tk.Frame):
 
         text = Text(results_frame)
 
-        for word in TEST:
+        for word in self.words:
             text.insert(END, word+"\n")
 
         text.pack()
@@ -79,7 +80,16 @@ class UI(tk.Frame):
         self.set_grids(control_frame)
 
     def testing_function(self):
-        print("A button was pressed")
+        self.generator = Generator("testing/testing.txt", int(self.degrees.get()), int(self.word_length.get()))
+        self.generator.train()
+
+        self.words = self.generator.generate(int(self.n.get()))
+
+        self.results_frame()
+
+
+        
+
 
     def parameter_panel_widget(self,frame):
 
