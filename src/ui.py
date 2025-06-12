@@ -16,7 +16,9 @@ class UI(tk.Frame):
         self.root.columnconfigure(0, weight = 1)
         self.root.rowconfigure(0,weight=1)
 
-        self.words = ["Please generate words.", "You can assign wanted parameters in the fields to the right."]        
+        self.words = ["Please generate words.", "Select you training file first, any UTF-8 .txt file will do.",
+                        "You can assign wanted parameters in the fields to the right.",
+                        "Please press train to populate the trie.", "Press run generation to create new words."]        
         self.filename = "Please select a file"
         
         self.input_frames()
@@ -85,11 +87,6 @@ class UI(tk.Frame):
     
     
     def run_generation(self):
-        #TODO: separate generation and training so user can generate multiple lists if wanted
-        
-        self.generator = Generator(self.filename, int(self.degrees.get()), int(self.word_length.get()))
-        self.generator.train()
-
         self.words = self.generator.generate(int(self.n.get()))
 
         self.results_frame()
@@ -105,7 +102,11 @@ class UI(tk.Frame):
 
         self.filename = filename
         self.training_widget()
-        
+
+    def train(self):
+        #TODO: separate word length from __init__ so we can change how long we want words to be later.
+        self.generator = Generator(self.filename, int(self.degrees.get()), int(self.word_length.get()))
+        self.generator.train()
 
     def training_widget(self):
         training_frame = ttk.Frame(self.input_frame)
@@ -150,8 +151,7 @@ class UI(tk.Frame):
         n_entry = ttk.Entry(parameter_frame, width = 5, textvariable = self.n)
         n_entry.grid(column=1,row=3)
 
-        #ttk.Button(parameter_frame, text="Select training file",command=self.select_training_file).grid(column=0,row=4)
-        #ttk.Label(parameter_frame, text=self.filename).grid(column=1,row=4)
+        ttk.Button(parameter_frame, text="Train", command=self.train).grid(column=0, row=4)
         
 
         # Populate the frames
