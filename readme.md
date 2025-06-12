@@ -4,8 +4,7 @@
 
 ### Käyttöohje
 
-Ohjelma toimii tällä hetkellä komentoriviltä. Ohjelman saa käynnistettyä ajamalla komentoriviltä main.py ja antamalla sille argumenttina halutun harjoitustiedoston.
+Ohjelmaa voi käyttää joka graafisen käyttöliittymän tai komentorivin kautta. Ohjelman komentoriviversion saa käynnistettyä ajamalla komentoriviltä main.py ja antamalla sille argumenttina halutun harjoitustiedoston. Käyttöliittymäversion saa ajamalla komentoriviltä ui.py. GUI versio ei tällä hetkellä tue tiedoston tallentamista mutta on muuten parempi versio. Kun GUI versio tukee kaikkia haluttuja toiminnallisuuksia, komentoriviversio poistuu.
 
-Kätevän harjoitusdatan saa esim. Kotuksen nykysuomen sanalistasta joka löytyy ladattavana tiedostona Kotuksen kotisivuilta. Vastaavasti mikä tahansa .txt muodossa oleva tiedosto voi toimia harjoitusdatana.
 
-Seuraavan version tavoitteena on parantaa käyttäjäystävällisyyttä.
+Kätevän harjoitusdatan saa esim. Kotuksen nykysuomen sanalistasta joka löytyy ladattavana tiedostona Kotuksen kotisivuilta. Vastaavasti mikä tahansa UTF-8 enkoodattu .txt muodossa oleva tiedosto voi toimia harjoitusdatana.
