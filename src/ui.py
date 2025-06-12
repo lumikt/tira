@@ -49,19 +49,23 @@ class UI(tk.Frame):
     def input_frames(self):
 
         # Parent frame for the input fields, parameters & run controls
-        input_frame = ttk.Frame(self.mainframe,padding="3 3 12 12")
-        input_frame.columnconfigure(0, weight=1)
-        input_frame.rowconfigure(0,weight=1)
+        self.input_frame = ttk.Frame(self.mainframe,padding="3 3 12 12")
+        self.input_frame.columnconfigure(0, weight=1)
+        self.input_frame.rowconfigure(0,weight=1)
 
         # Call to create parameter panel
-        self.parameter_panel_widget(input_frame)
+        self.parameter_panel_widget(self.input_frame)
+        
+        self.training_widget()
 
         #Call to create operating panel
-        self.control_panel_widget(input_frame)
+        self.control_panel_widget(self.input_frame)
         
-        self.set_grids(input_frame)
+        self.set_grids(self.input_frame)
 
-        input_frame.grid(column=1, row=1)
+        self.input_frame.grid(column=1, row=1)
+
+
 
 
     def control_panel_widget(self,frame):
@@ -78,6 +82,8 @@ class UI(tk.Frame):
         self.set_grids(control_frame)
         #TODO: Add field to show currently trained on file
 
+    
+    
     def run_generation(self):
         #TODO: separate generation and training so user can generate multiple lists if wanted
         
@@ -98,7 +104,23 @@ class UI(tk.Frame):
         filename = filedialog.askopenfilename()
 
         self.filename = filename
-        self.input_frames()
+        self.training_widget()
+        
+
+    def training_widget(self):
+        training_frame = ttk.Frame(self.input_frame)
+        training_frame.columnconfigure(0,weight=1)
+        training_frame.rowconfigure(0,weight=1)
+
+        ttk.Button(training_frame, text="Select training file",command=self.select_training_file).grid(column=0,row=1)
+        
+        self.label_text = StringVar()
+        self.label_text.set(self.filename)
+
+        ttk.Label(training_frame, textvariable=self.label_text).grid(column=0,row=2)
+
+        self.set_grids(training_frame)
+        training_frame.grid(column=0,row=1)
 
 
     def parameter_panel_widget(self,frame):
@@ -128,12 +150,13 @@ class UI(tk.Frame):
         n_entry = ttk.Entry(parameter_frame, width = 5, textvariable = self.n)
         n_entry.grid(column=1,row=3)
 
-        ttk.Button(parameter_frame, text="Select training file",command=self.select_training_file).grid(column=0,row=4)
-        ttk.Label(parameter_frame, text=self.filename).grid(column=1,row=4)
+        #ttk.Button(parameter_frame, text="Select training file",command=self.select_training_file).grid(column=0,row=4)
+        #ttk.Label(parameter_frame, text=self.filename).grid(column=1,row=4)
         
 
         # Populate the frames
         self.set_grids(parameter_frame)
+        parameter_frame.grid(column=0, row=2)
 
     def set_grids(self,frame):
         # Function to run through widget children and packing them into the grid
