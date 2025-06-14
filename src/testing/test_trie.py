@@ -69,3 +69,7 @@ class TrieTest(unittest.TestCase):
 
         node_freq = trie.search("sun").frequency
         self.assertEqual(3,node_freq)
+
+#TODO: Add tests for nodes to show that trie-tree is generated correctly. Some kind of string function.
+# eg. 10 words, print some kind of tree. A printout compard to test string.
+# Test for amount of nodes (should match to handmade list).
