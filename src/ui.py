@@ -82,7 +82,6 @@ class UI(tk.Frame):
         ttk.Button(control_frame, text="Run generation", command=self.run_generation).grid(column=1,row=1)
 
         self.set_grids(control_frame)
-        #TODO: Add field to show currently trained on file
 
     
     
@@ -93,7 +92,15 @@ class UI(tk.Frame):
 
 
     def save_output(self):
-        print("This will save the output")        
+        save_file = filedialog.asksaveasfilename(defaultextension=".txt")
+
+        if save_file == None:
+            return
+        
+        words_to_write = "\n".join(self.words)
+
+        with open(save_file,"w") as file:
+            file.write(words_to_write)
 
 
     def select_training_file(self):
