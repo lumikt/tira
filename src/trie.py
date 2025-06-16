@@ -115,24 +115,3 @@ class Trie:
 
     def __str__(self):
         return f'{self.starting_node}'
-
-
-if __name__ == "__main__":
-    print("Dev testing:\n")
-
-
-    
-    trie_test = Trie(3)
-
-    trie_test.add("super")
-
-    trie_test.add("succor")
-    trie_test.add("sunset")
-    trie_test.add("sundown")
-    trie_test.add("ksuspop")
-
-    print(trie_test.search("sund"))
-    print(trie_test.search("su"))
-    print(trie_test.search("s"))
-    print(trie_test.search("k"))
-

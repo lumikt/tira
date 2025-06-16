@@ -1,5 +1,5 @@
 import io
-
+from string import ascii_lowercase
 class DataHandler:
 
     def __init__(self, source):
@@ -25,13 +25,20 @@ class DataHandler:
 
         raw_words = raw_data.split()
 
-        #Tekstin käsittely haasteellista, jotain häikkää åäö-merkkien tunnistuksessa ja printtauksessa.
+        # Sets allowed chars to full list of ascii (english alphabet) + åäö to allow
+        # populating with finnish words.
+        allowed_chars = ascii_lowercase
+        allowed_chars += "åäö"
+        
+        # Clean the words from any extra characters and assign them to lower case
+
         for words in raw_words:
-            clean_word = "".join([c for c in words if c not in "0123456789 -.,@_!#$%^&*()<>?/|}{~:[]"])
+            lower_case_word = words.lower()
+            clean_word = "".join([c for c in lower_case_word if c in allowed_chars])
             if clean_word == "":
                 continue
             self.data.append(clean_word.lower())
         
-
+        # Return a list of words to populate the trie with
         return self.data
 
