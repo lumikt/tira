@@ -70,6 +70,36 @@ class TrieTest(unittest.TestCase):
         node_freq = trie.search("sun").frequency
         self.assertEqual(3,node_freq)
 
-#TODO: Add tests for nodes to show that trie-tree is generated correctly. Some kind of string function.
-# eg. 10 words, print some kind of tree. A printout compard to test string.
-# Test for amount of nodes (should match to handmade list).
+
+    def test_trie_structure(self):
+        trie = Trie(2)
+        trie.add("sunset")
+        trie.add("testset")
+        trie.add("sunlight")
+
+        nodes = []
+        
+        node = trie.starting_node
+
+        correct_string = ['', 's', 'su', 'sun', 'se', 'set', 'st', 'sts', 'u', 'un', 'uns', 'unl',
+            'n', 'ns', 'nse', 'nl', 'nli', 'e', 'et', 'es', 'est', 't', 'te', 'tes', 'ts', 'tse', 'l',
+            'li', 'lig', 'i', 'ig', 'igh', 'g', 'gh', 'ght', 'h', 'ht']
+
+
+        self.print_helper(node,nodes)
+        self.assertEqual(nodes, correct_string)
+
+        correct_node_amount = 37
+        self.assertEqual(len(nodes), correct_node_amount)    
+    
+    def print_helper(self, node, nodes):
+
+        nodes.append(node.value)
+
+        if node.children == {}:
+            return 
+        
+        for child in node.children:
+            self.print_helper(node.children[child], nodes)        
+
+        return
