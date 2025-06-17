@@ -21,6 +21,15 @@ class UI(tk.Frame):
                         "You can assign wanted parameters in the fields to the right.",
                         "Please press train to populate the trie.", "Press run generation to create new words."]        
         self.filename = "Please select a file"
+
+        self.degrees = StringVar()
+        self.degrees.set(2) # Default Markov chain degree
+
+        self.word_length = StringVar()
+        self.word_length.set(8) # Default word length to generate
+
+        self.n = StringVar()
+        self.n.set(15) # Default amount of words to generate
         
         # Create separate frames for input (left side) and
         # results (right side)
@@ -83,8 +92,6 @@ class UI(tk.Frame):
         control_frame = ttk.Frame(frame)
         control_frame.columnconfigure(0, weight=1)
         control_frame.rowconfigure(0, weight=1)
-
-        ttk.Label(control_frame, text="Control panel widget").grid(column=0,row=0)
 
         ttk.Button(control_frame, text="Save results",command=self.save_output).grid(column=0,row=1)
 
@@ -167,23 +174,18 @@ class UI(tk.Frame):
         parameter_frame.columnconfigure(0, weight=1)
         parameter_frame.rowconfigure(0, weight=1)
 
-        ttk.Label(parameter_frame, text="Parameter widget thing").grid()
-
         # Assign label and entry field to degree selection
-        ttk.Label(parameter_frame, text="Degree: ").grid(column=0,row=1)
-        self.degrees = StringVar()
+        ttk.Label(parameter_frame, text="Markov chain degree: ").grid(column=0,row=1)
         degree_entry = ttk.Entry(parameter_frame, width=5, textvariable=self.degrees)
         degree_entry.grid(column=1,row=1)
 
         # Assign label and entry field to word length selection
-        ttk.Label(parameter_frame,text="Test").grid(column=0, row=2)
-        self.word_length= StringVar()
+        ttk.Label(parameter_frame,text="Word length").grid(column=0, row=2)
         length_entry = ttk.Entry(parameter_frame, width=5, textvariable=self.word_length)
         length_entry.grid(column=1,row=2)
 
         # Assign label and entry field for word amount selection
-        ttk.Label(parameter_frame, text="Words to generate:").grid(column=0,row=3)
-        self.n = StringVar()
+        ttk.Label(parameter_frame, text="Word amount to generate:").grid(column=0,row=3)
         n_entry = ttk.Entry(parameter_frame, width = 5, textvariable = self.n)
         n_entry.grid(column=1,row=3)
 
