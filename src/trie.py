@@ -8,6 +8,7 @@ class Node:
         self.children = {}  # A dictionary of child nodes which follow from current nodes
         self.frequency = 1 # The amount of times the node string has been added to data, used to calc probabilities
 
+
     def add(self, node):
         '''
         Assign a new child to the children-dictionary with the string value of the node being added as 
@@ -91,6 +92,7 @@ class Trie:
 
         return node
 
+
     def search_helper(self, key, node):
         '''
         Helper function for search(). Recursively traverses the trie to find the node matching given key.
@@ -108,9 +110,6 @@ class Trie:
             if key[0:i] in node.children:
                 return self.search_helper(key, node.children[key[0:i]])
         return None
-
-
-
 
 
     def __str__(self):
