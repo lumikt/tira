@@ -16,16 +16,20 @@ class UI(tk.Frame):
         self.root.columnconfigure(0, weight = 1)
         self.root.rowconfigure(0,weight=1)
 
+        # Set default value in results window to instructions on how to use.
         self.words = ["Please generate words.", "Select you training file first, any UTF-8 .txt file will do.",
                         "You can assign wanted parameters in the fields to the right.",
                         "Please press train to populate the trie.", "Press run generation to create new words."]        
         self.filename = "Please select a file"
         
+        # Create separate frames for input (left side) and
+        # results (right side)
         self.input_frames()
         self.results_frame()
 
-        for child in self.mainframe.winfo_children(): 
-            child.grid_configure(padx=5, pady=5)
+        # set_grids() is a class method to use grid.configure
+        # for all children of the frame.
+        self.set_grids(self.mainframe)
 
 
 
@@ -49,7 +53,9 @@ class UI(tk.Frame):
 
 
     def input_frames(self):
-
+        '''
+            Contains the control widgets for generation.
+        '''
         # Parent frame for the input fields, parameters & run controls
         self.input_frame = ttk.Frame(self.mainframe,padding="3 3 12 12")
         self.input_frame.columnconfigure(0, weight=1)
@@ -71,6 +77,9 @@ class UI(tk.Frame):
 
 
     def control_panel_widget(self,frame):
+        '''
+            Widget for parameters and training file selection.
+        '''
         control_frame = ttk.Frame(frame)
         control_frame.columnconfigure(0, weight=1)
         control_frame.rowconfigure(0, weight=1)
@@ -86,12 +95,18 @@ class UI(tk.Frame):
     
     
     def run_generation(self):
+        '''
+            Calls on Generator method generate() to create random words.
+        '''
         self.words = self.generator.generate(int(self.n.get()))
 
         self.results_frame()
 
 
     def save_output(self):
+        '''
+            Saves generated output to a file in the users system.
+        '''
         save_file = filedialog.asksaveasfilename(defaultextension=".txt")
 
         if save_file == None:
@@ -104,18 +119,32 @@ class UI(tk.Frame):
 
 
     def select_training_file(self):
-        # TODO: need to separate input_frames() from training file selection to update the frame without losing parameters
-        filename = filedialog.askopenfilename()
+        '''
+            Function to select a file to train on.
+        '''
 
+        filename = filedialog.askopenfilename()
+        if filename == None:
+            return
+        
         self.filename = filename
         self.training_widget()
 
     def train(self):
+        '''
+            Calls on Generator class method train() to populate the trie structure.
+        '''
         #TODO: separate word length from __init__ so we can change how long we want words to be later.
         self.generator = Generator(self.filename, int(self.degrees.get()), int(self.word_length.get()))
         self.generator.train()
 
     def training_widget(self):
+        '''
+            Widget to contain training file selection.
+        '''
+        # Separating the widget from parameter selection allows the UI
+        # to refresh without resetting the parameter input fields.
+        
         training_frame = ttk.Frame(self.input_frame)
         training_frame.columnconfigure(0,weight=1)
         training_frame.rowconfigure(0,weight=1)
