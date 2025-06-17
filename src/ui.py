@@ -144,7 +144,7 @@ class UI(tk.Frame):
         '''
         # Separating the widget from parameter selection allows the UI
         # to refresh without resetting the parameter input fields.
-        
+
         training_frame = ttk.Frame(self.input_frame)
         training_frame.columnconfigure(0,weight=1)
         training_frame.rowconfigure(0,weight=1)
@@ -203,8 +203,3 @@ class UI(tk.Frame):
     def run(self):
         self.mainloop()
         
-
-
-app = UI()
-
-app.run()
