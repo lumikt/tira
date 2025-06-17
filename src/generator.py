@@ -10,6 +10,7 @@ class Generator:
         self.degree = degree
         self.word_length = word_length
 
+
     def train(self):
         """
         Commits the training data to the trie structure and updates the trie node frequencies.
@@ -20,6 +21,7 @@ class Generator:
 
         for word in data:
             self.trie.add(word)
+
 
     def choose(self, nodes:dict):
         """
@@ -55,7 +57,7 @@ class Generator:
                 return character[-1:]
         
 
-    def generate(self,n:int=5):
+    def generate(self,n:int=15):
         """
         Generates a list of words using a Markov chain.
         Args: 
@@ -64,6 +66,9 @@ class Generator:
         generated_words = []
         words_to_generate = n
         desired_word_length = self.word_length 
+        
+        # Check for how many loops we run through
+        iterations = 1
 
         while words_to_generate > 0:
             word = ""
@@ -94,7 +99,17 @@ class Generator:
 
                 # Send node children to choose() which selects the following character
                 word += self.choose(node.children)
-   
+
+            iterations += 1
+            
+            # If there are too many iterations, we interrupt the generation to avoid an infinite loop.
+            # The training dataset constrains how many unique words we can generate with a given degree.
+            # The higher the degree, fewer allowed combinations exist.
+
+            if iterations > 1000:
+                return ["Too many iterations, generation aborted.\n","Please try changing either degree or word amount.", 
+                "It appears the training dataset doesn't contain \nenough material for your desired generation."]
+            
             # Check if the generated string matches specifications and is not a duplicate.
             if (word in generated_words) or (len(word) < desired_word_length):
                 continue
@@ -103,27 +118,3 @@ class Generator:
             words_to_generate -=1
             
         return generated_words
-
-if __name__ == "__main__":
-    print("Dev testing:\n")
-    print()
-
-    test = Generator("testing.txt", 3)
-    test.trie.add("kaikkivoipa")
-    test.trie.add("asiaa")
-    test.trie.add("tervahammas")
-    test.trie.add("sekalainen")
-    test.trie.add("asianhaara")
-    test.trie.add("kukkanen")
-    #test.trie.add("elämä")
-    test.trie.add("tappava ")
-    #test.trie.add("turvasatama")
-    #test.trie.add("eläkeläinen")
-
-    #print(test.trie.starting_node)
-    #print(test.trie.search(""))
-    #print(test.trie.starting_node)
-    words = test.generate(2)
-    
-    for word in words:
-        print(word)
