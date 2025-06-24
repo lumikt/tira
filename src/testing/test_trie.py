@@ -9,25 +9,26 @@ class TrieTest(unittest.TestCase):
 
     
     def test_trie_adding_single_character(self):
-
         self.trie.add("w")
 
         self.assertTrue("w" in self.trie.starting_node.children)
+
 
     def test_trie_search(self):
         self.trie.add("w")
         node = self.trie.search("w").value
 
         self.assertEqual("w", node)
-    def test_trie_adding_a_word(self):
 
+
+    def test_trie_adding_a_word(self):
         self.trie.add("triumphant")
         test_case = self.trie.search("tri")
 
         self.assertNotEqual(None,test_case)
     
-    def test_trie_search_multiple_nodes(self):
 
+    def test_trie_search_multiple_nodes(self):
         trie = Trie(3)
 
         trie.add("super")
@@ -41,6 +42,7 @@ class TrieTest(unittest.TestCase):
         self.assertEqual(trie.search("per").value, "per")
         self.assertEqual(trie.search("dow").value, "dow")
     
+
     def test_trie_variable_degrees(self):
         word = "califragilisticexpialidocious"
         its_ok = True
@@ -49,11 +51,12 @@ class TrieTest(unittest.TestCase):
             trie.add(word)
 
             node = trie.search(word[0:i])
-            if not node:
+            if node == None:
                 its_ok = False
                 break
         
         self.assertTrue(its_ok)
+
 
     def test_trie_frequency_updates(self):
 
@@ -78,7 +81,6 @@ class TrieTest(unittest.TestCase):
         trie.add("sunlight")
 
         nodes = []
-        
         node = trie.starting_node
 
         correct_string = ['', 's', 'su', 'sun', 'se', 'set', 'st', 'sts', 'u', 'un', 'uns', 'unl',
@@ -92,8 +94,8 @@ class TrieTest(unittest.TestCase):
         correct_node_amount = 37
         self.assertEqual(len(nodes), correct_node_amount)    
     
-    def print_helper(self, node, nodes):
 
+    def print_helper(self, node, nodes):
         nodes.append(node.value)
 
         if node.children == {}:
