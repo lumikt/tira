@@ -106,7 +106,7 @@ class Generator:
             # The training dataset constrains how many unique words we can generate with a given degree.
             # The higher the degree, fewer allowed combinations exist.
 
-            if iterations > 1000:
+            if iterations > 2000:
                 return ["Too many iterations, generation aborted.\n","Please try changing either degree or word amount.", 
                 "It appears the training dataset doesn't contain \nenough material for your desired generation."]
             
