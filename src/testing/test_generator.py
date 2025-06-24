@@ -71,6 +71,3 @@ class GeneratorTest(unittest.TestCase):
         for word in words:
             for i in range(0,len(words)+1-self.degree):
                 self.assertTrue(word[i:i+self.degree] in allowed_sequences)
-
-    #TODO: test generator.choose() so it selects the right ranges.
-    # Test where we replace randint with a list of preselected words to check that all words are selected correctly.
