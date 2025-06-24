@@ -7,7 +7,6 @@ from generator import Generator
 
 
 class UI(tk.Frame):
-
     def __init__(self):
         self.root = tk.Tk()
         super().__init__(self.root)
@@ -41,14 +40,15 @@ class UI(tk.Frame):
         self.set_grids(self.mainframe)
 
 
-
+    # UI structure functions
     def results_frame(self):
-
+        '''
+            Widget contains the right hand side of the UI, i.e. the results panel.
+        '''
         # Parent frame for results view
         results_frame = ttk.Frame(self.mainframe, padding="3 3 12 12")
         results_frame.columnconfigure(0, weight=1)
         results_frame.rowconfigure(0,weight=1)
-
 
         # Textbox to contain generated words
         text = Text(results_frame)
@@ -56,24 +56,25 @@ class UI(tk.Frame):
         for word in self.words:
             text.insert(END, word+"\n")
 
-        text.pack()
+        text.pack() # Pack the words into the textbox
         
         results_frame.grid(column=2,row=1)
 
 
     def input_frames(self):
         '''
-            Contains the control widgets for generation.
+            Contains the control widgets for generation, i.e. the left hand side of the UI.
         '''
         # Parent frame for the input fields, parameters & run controls
         self.input_frame = ttk.Frame(self.mainframe,padding="3 3 12 12")
         self.input_frame.columnconfigure(0, weight=1)
         self.input_frame.rowconfigure(0,weight=1)
+        
+        #Call to create training operations widget
+        self.training_widget()
 
         # Call to create parameter panel
         self.parameter_panel_widget(self.input_frame)
-        
-        self.training_widget()
 
         #Call to create operating panel
         self.control_panel_widget(self.input_frame)
@@ -83,68 +84,7 @@ class UI(tk.Frame):
         self.input_frame.grid(column=1, row=1)
 
 
-
-
-    def control_panel_widget(self,frame):
-        '''
-            Widget for parameters and training file selection.
-        '''
-        control_frame = ttk.Frame(frame)
-        control_frame.columnconfigure(0, weight=1)
-        control_frame.rowconfigure(0, weight=1)
-
-        ttk.Button(control_frame, text="Save results",command=self.save_output).grid(column=0,row=1)
-
-        ttk.Button(control_frame, text="Run generation", command=self.run_generation).grid(column=1,row=1)
-
-        self.set_grids(control_frame)
-
-    
-    
-    def run_generation(self):
-        '''
-            Calls on Generator method generate() to create random words.
-        '''
-        self.words = self.generator.generate(int(self.n.get()))
-
-        self.results_frame()
-
-
-    def save_output(self):
-        '''
-            Saves generated output to a file in the users system.
-        '''
-        save_file = filedialog.asksaveasfilename(defaultextension=".txt")
-
-        if save_file == None:
-            return
-        
-        words_to_write = "\n".join(self.words)
-
-        with open(save_file,"w") as file:
-            file.write(words_to_write)
-
-
-    def select_training_file(self):
-        '''
-            Function to select a file to train on.
-        '''
-
-        filename = filedialog.askopenfilename()
-        if filename == None:
-            return
-        
-        self.filename = filename
-        self.training_widget()
-
-    def train(self):
-        '''
-            Calls on Generator class method train() to populate the trie structure.
-        '''
-        #TODO: separate word length from __init__ so we can change how long we want words to be later.
-        self.generator = Generator(self.filename, int(self.degrees.get()), int(self.word_length.get()))
-        self.generator.train()
-
+    # Input frame widgets
     def training_widget(self):
         '''
             Widget to contain training file selection.
@@ -168,7 +108,9 @@ class UI(tk.Frame):
 
 
     def parameter_panel_widget(self,frame):
-
+        '''
+            Widget contains parameter panel. Used to take user input.
+        '''
         # Create parent frame for parameter panel
         parameter_frame = ttk.Frame(frame)
         parameter_frame.columnconfigure(0, weight=1)
@@ -190,18 +132,84 @@ class UI(tk.Frame):
         n_entry.grid(column=1,row=3)
 
         ttk.Button(parameter_frame, text="Train", command=self.train).grid(column=0, row=4)
-        
 
         # Populate the frames
         self.set_grids(parameter_frame)
         parameter_frame.grid(column=0, row=2)
+    
+    
+    def control_panel_widget(self,frame):
+        '''
+            Widget for operating saving and running word generation.
+        '''
+        control_frame = ttk.Frame(frame)
+        control_frame.columnconfigure(0, weight=1)
+        control_frame.rowconfigure(0, weight=1)
 
+        ttk.Button(control_frame, text="Save results",command=self.save_output).grid(column=0,row=1)
+
+        ttk.Button(control_frame, text="Run generation", command=self.run_generation).grid(column=1,row=1)
+
+        self.set_grids(control_frame)
+
+
+    # I/O functions for the UI.
+    def save_output(self):
+        '''
+            Saves generated output to a file in the users system.
+        '''
+        save_file = filedialog.asksaveasfilename(defaultextension=".txt")
+
+        if save_file == None:
+            return
+        
+        words_to_write = "\n".join(self.words)
+
+        with open(save_file,"w") as file:
+            file.write(words_to_write)
+
+
+    def select_training_file(self):
+        '''
+            Function to select a file to train on.
+        '''
+        filename = filedialog.askopenfilename()
+        if filename == None:
+            return
+        
+        self.filename = filename
+        self.training_widget()
+
+
+    #Functions to call on underlying app logic.
+    def train(self):
+        '''
+            Calls on Generator class method train() to populate the trie structure.
+        '''
+        self.generator = Generator(self.filename, int(self.degrees.get()), int(self.word_length.get()))
+        self.generator.train()
+    
+
+    def run_generation(self):
+        '''
+            Calls on Generator method generate() to create random words.
+        '''
+        self.words = self.generator.generate(int(self.n.get()))
+
+        self.results_frame()
+
+
+    #Help functions
     def set_grids(self,frame):
-        # Function to run through widget children and packing them into the grid
+        '''
+            Shorthand function to populate the frame grid.
+        '''
         for child in frame.winfo_children():
             child.grid_configure(padx=2,pady=2)
 
 
     def run(self):
+        '''
+            Shorthand function to run the app
+        '''
         self.mainloop()
-        
