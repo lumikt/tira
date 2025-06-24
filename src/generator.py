@@ -1,11 +1,11 @@
 from random import randint
+
 from trie import Trie
 from data_handler import DataHandler
 
 class Generator:
-
     def __init__(self, source, degree:int = 2, word_length:int = 8):
-        self.trie = Trie(degree)
+        self.trie = Trie(degree) 
         self.data_handler = DataHandler(source)
         self.degree = degree
         self.word_length = word_length
@@ -29,7 +29,6 @@ class Generator:
         Args:
             nodes (dict): a dictionary of Node-type objects.
         """
-
         total_weight_of_nodes = 0
         selection_ranges = {}
 
@@ -107,8 +106,9 @@ class Generator:
             # The higher the degree, fewer allowed combinations exist.
 
             if iterations > 2000:
-                return ["Too many iterations, generation aborted.\n","Please try changing either degree or word amount.", 
-                "It appears the training dataset doesn't contain \nenough material for your desired generation."]
+                return ["Too many iterations, generation aborted.\n",
+                "Please try changing either degree or word amount.", 
+                "It appears the training dataset doesn't contain \nenough words for your desired generation."]
             
             # Check if the generated string matches specifications and is not a duplicate.
             if (word in generated_words) or (len(word) < desired_word_length):

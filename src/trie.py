@@ -1,5 +1,3 @@
-#Work in progress, aikainen hahmotelma rakenteesta.
-
 
 class Node:
 
@@ -23,6 +21,7 @@ class Node:
     def __str__(self):
         return f'Node: "{self.value}" with frequency {self.frequency}, children are {self.children}'
     
+
     def __repr__(self):
         return f'Node({self.value})'
 
