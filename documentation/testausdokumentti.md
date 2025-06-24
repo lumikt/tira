@@ -23,3 +23,5 @@ Lopuksi varmistetaan, että lisättäessä triehen merkkijono sen esiintyvyys p�
 Generaattorin testaaminen on haastavampaa, sillä se perustuu todennäköisyyksiin ja tulosteen arviointi vaatii sanan ”oikeellisuuden” arviointia, eli kuinka hyvin generoitu sana vastaa harjoitusdatan antamia esimerkkejä oikeasta kielistä tai vaikka nimistä.
 Generaattorista testataan tällä hetkellä annettujen parametrien toteutumista eli sanan pituuden ja sanojen määrän pituutta. 
 
+### Data_handler.py
+DataHandler-luokasta testataan että se varmasti poistaa erikoismerkit sekä erityisesti tyhjät välilyönnit harjoitusdatasta. I/O-operaatioita ei testata ollenkaan ohjeistuksen mukaan.
