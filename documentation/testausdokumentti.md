@@ -6,8 +6,13 @@
 Testit keskittyvät tällä hetkellä tärkeimpien moduulien testaukseen, eli trie.py sekä generator.py moduuleihin. Testien tarkoitus on varmistaa, että moduulit toimivat halutusti kehityksen edistyessä. Tarkemmat kuvaukset testauksesta löytyvät alta.
 
 Testit voidaan ajaa komennolla poetry run pytest src, tai vain pytest src. Testejä on kahdessa eri tiedostossa, jokainen omalle moduulilleen. Testit on kirjoitettu käyttäen pythonin unittest-kirjastoa sekä pytest-kirjastoa testien ajamiseen.
+### Testikattavuus
+![coveragereport](https://github.com/user-attachments/assets/c1573f0c-d704-45d3-a295-183a5861e253)
+
+Testit kattavat moduulien osat hyvin. Puuttuvat osat ovat I/O-operaatioita data_handler.py:ssä, generator.py:ssä oleva Trie-lisäys joka testataan trien omissa testeissä sekä trie.py:ssä olevat olioiden repr-metodit joita käytettiin vain kehitykseen.
 
 ### Trie.py
+
 Trie-oliolla on apuluokka Node jota ei tällä hetkellä testata suoraan, Noden koodia kuitenkin testataan kuitenkin epäsuorasti Trie-luokan testeillä sillä Trien toiminnot vaativat Noden toimivuutta jotta ne läpäisisivät testit.
 
 Trie-rakennetta testataan luomalla Trie()-luokka, johon lisätään sanoja trien omilla komennoilla. Ensin testaus varmistaa, että trie voidaan lisätä onnistuneesti yksi merkki, eli luoda trie joka on syvyydeltään 2, sisältäen tyhjän alkusolmun sekä lisätyn merkin solmun. Solmun lisäys varmistetaan tarkastmalla aloitussolmun lapsisanakirjan sisältö.
