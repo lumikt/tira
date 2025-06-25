@@ -1,8 +1,8 @@
 ## Aineopintojen harjoitustyö: Algoritmit ja tekoäly
 
-[Määrittelydokumentti](https://github.com/lumikt/tira/blob/main/documentation/maarittelydokumentti.md)
-[Testausdokumentti](https://github.com/lumikt/tira/blob/main/documentation/testausdokumentti.md)
-[Toteutusdokumentti](https://github.com/lumikt/tira/blob/main/documentation/toteutusdokumentti.md)
+[Määrittelydokumentti](https://github.com/lumikt/tira/blob/main/documentation/maarittelydokumentti.md)  
+[Testausdokumentti](https://github.com/lumikt/tira/blob/main/documentation/testausdokumentti.md)  
+[Toteutusdokumentti](https://github.com/lumikt/tira/blob/main/documentation/toteutusdokumentti.md)  
 
 ### Käyttöohje
 
