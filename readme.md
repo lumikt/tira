@@ -1,6 +1,8 @@
 ## Aineopintojen harjoitustyö: Algoritmit ja tekoäly
 
-[Määrittelydokumentti](https://github.com/lumikt/tira/blob/main/documentation/maarittelydokumentti.md)  
+[Määrittelydokumentti](https://github.com/lumikt/tira/blob/main/documentation/maarittelydokumentti.md)
+[Testausdokumentti](https://github.com/lumikt/tira/blob/main/documentation/testausdokumentti.md)
+[Toteutusdokumentti](https://github.com/lumikt/tira/blob/main/documentation/toteutusdokumentti.md)
 
 ### Käyttöohje
 
@@ -29,7 +31,8 @@ jonka jälkeen graafinen käyttöliittymä aukeaa.
 
 ### Sovelluksen käyttöohje
 
-TÄHÄ KUVA
+![ui](https://github.com/user-attachments/assets/04155495-9ac7-451d-b918-1a5d079b13ef)
+
 
 Graafisessa käyttöliittymässä tulee ensin valita harjoitustiedosto painamalla __Select training file__ ja valitsemalla haluamasi tiedoston.
 
