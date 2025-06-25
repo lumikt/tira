@@ -8,7 +8,7 @@ Testit keskittyvät tällä hetkellä tärkeimpien moduulien testaukseen, eli da
 Testit voidaan ajaa komennolla poetry run pytest src, tai vain pytest src. Testejä on kolmessa eri tiedostossa, jokainen omalle moduulilleen. Testit on kirjoitettu käyttäen pythonin unittest-kirjastoa sekä pytest-kirjastoa testien ajamiseen.
 
 ### Testikattavuus
-![coveragereport](https://github.com/user-attachments/assets/c1573f0c-d704-45d3-a295-183a5861e253)
+![cvgreport](https://github.com/user-attachments/assets/ad879d5e-8ceb-4eb3-9c8b-a2b39273f63b)
 
 Testit kattavat moduulien osat hyvin. Puuttuvat osat ovat I/O-operaatioita data_handler.py:ssä, generator.py:ssä oleva Trie-lisäys joka testataan trien omissa testeissä sekä trie.py:ssä olevat olioiden repr-metodit joita käytettiin vain kehitykseen.
 
