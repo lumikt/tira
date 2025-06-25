@@ -71,3 +71,18 @@ class GeneratorTest(unittest.TestCase):
         for word in words:
             for i in range(0,len(words)+1-self.degree):
                 self.assertTrue(word[i:i+self.degree] in allowed_sequences)
+
+    
+    def test_no_infinite_loop(self):
+
+        generator = Generator("placeholder_file_path.txt", 4, 8)
+        for word in ["too", "short"]:
+            generator.trie.add(word)
+        
+        return_error_msg = generator.generate(1000)
+
+        correct_error_msg = ["Too many iterations, generation aborted.\n",
+                "Please try changing either degree or word amount.", 
+                "It appears the training dataset doesn't contain \nenough words for your desired generation."]
+
+        self.assertEqual(return_error_msg, correct_error_msg)
