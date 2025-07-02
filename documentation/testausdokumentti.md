@@ -20,7 +20,7 @@ Käynnistetään poetry:
 
 jonka jälkeen ajetaan:
 
-    poetry run coverage --branch -m pytest
+    poetry run coverage run --branch -m pytest
 
 ja raportti generoidaan ajamalla:
 
